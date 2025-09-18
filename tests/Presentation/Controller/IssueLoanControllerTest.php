@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Tests\Presentation\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+final class IssueLoanControllerTest extends WebTestCase
+{
+    public function testIndex(): void
+    {
+        $client = static::createClient();
+        $client->request('POST', '/loans/issue');
+
+        self::assertResponseIsSuccessful();
+    }
+}

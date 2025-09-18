@@ -18,3 +18,21 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # FACTORY
+    App\Domain\Loan\Policy\LoanEligibilityPolicy:
+        factory: [ App\Infrastructure\LoanEligibilityPolicyFactory, create ]
+
+    # BINDINGS
+    App\Application\Shared\EventBus: '@App\Infrastructure\Event\SymfonyEventBus'
+    App\Domain\Common\Service\IdGenerator: '@App\Infrastructure\Service\UuidGenerator'
+    App\Domain\Client\Repository\ClientRepository: '@App\Infrastructure\Persistence\Doctrine\Repository\DoctrineClientRepository'
+    App\Domain\Loan\Repository\LoanRepository: '@App\Infrastructure\Persistence\Doctrine\Repository\DoctrineLoanRepository'
+
+    # EVENTS
+    App\Infrastructure\Listener\LogLoanIssuedNotification:
+        tags:
+            - { name: kernel.event_listener, event: App\Domain\Loan\Event\LoanIssued }
+    App\Infrastructure\Listener\LogLoanDeclinedNotification:
+        tags:
+            - { name: kernel.event_listener, event: App\Domain\Loan\Event\LoanDeclined }
